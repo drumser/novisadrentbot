@@ -3,12 +3,11 @@ package ru.quantick
 import com.elbekd.bot.Bot
 import com.elbekd.bot.model.ChatId
 import com.elbekd.bot.types.ParseMode
-import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import ru.quantick.dao.ShowedAdsDAO
 import ru.quantick.model.getIdentifier
+import ru.quantick.model.getSource
 import ru.quantick.service.RentService
 
 
@@ -32,13 +31,12 @@ fun main() {
                 }
 
                 val text = "<b>New AD:</b>\n" +
-                        "<b>Source:</b> ${item.source}\n" +
-                        "<b>Identifier:</b> ${item.id}\n" +
+                        "<b>Source:</b> ${item.getSource()}\n" +
                         "<b>Link:</b> ${item.link}\n" +
                         "<b>Location:</b> ${item.location}\n" +
                         "<b>Size:</b> ${item.size}\n" +
                         "<b>Structure:</b> ${item.structure}\n" +
-                        "<b>Furnished:</b> ${item.furnished}\n" +
+                        "<b>Furnished:</b> ${item.furnished ?: "unknown"}\n" +
                         "<b>Published at:</b> ${item.firstPublished}\n\n" +
                         "<b>PRICE: ${item.price}</b>"
                 bot.sendMessage(

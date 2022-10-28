@@ -1,7 +1,7 @@
 services:
   bot:
     restart: unless-stopped
-    build: .
+    image: drumser/novisadrentbot:latest
     volumes:
       - "db:/build"
     env_file:

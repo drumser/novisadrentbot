@@ -19,7 +19,7 @@ jobs:
         password: ${{ secrets.HOST_PASSWORD }}
 #         key: ${{ secrets.HOST_KEY }}
         port: 22
-        script: whoami
+        script: ls
 #   build:
 #     runs-on: ubuntu-latest
 #     steps:

@@ -1,7 +1,7 @@
-package ru.quantick.service.provider
+package ru.quantick.service.parser.provider
 
 import ru.quantick.model.RentAd
 
-interface RentAdInterface {
+interface RentProvider {
     suspend fun getLastAds(num: Int): List<RentAd>
 }

@@ -1,4 +1,4 @@
-package ru.quantick.service.provider
+package ru.quantick.service.parser.provider
 
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -26,8 +26,8 @@ data class Flat(
     val price: Float
 )
 
-class CityexpertProvider() : RentAdInterface {
-    override suspend fun getLastAds(num: Int): List<RentAd> = HttpClient.create().get("${HOST_URL}/api/Search") {
+class CityexpertProvider() : RentProvider {
+    override suspend fun getLastAds(num: Int): List<RentAd> = HttpClient.client().get("$HOST_URL/api/Search") {
         url {
             parameters.append(
                 "req",

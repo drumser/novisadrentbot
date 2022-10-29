@@ -1,4 +1,4 @@
-package ru.quantick.service.provider
+package ru.quantick.service.parser.provider
 
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -31,11 +31,11 @@ data class FourZidaAd(
     val urlPath: String? = null,
 )
 
-class FourZidaProvider : RentAdInterface {
+class FourZidaProvider : RentProvider {
     override suspend fun getLastAds(num: Int): List<RentAd> {
         val response = kotlin.runCatching {
             HttpClient
-                .create()
+                .client()
                 .get("$HOST/v6/search/apartments?for=rent&priceTo=1500&sort=createdAtDesc&page=1&placeIds[]=600")
                 .body<FourZidaSearchResponse>()
         }.getOrElse { FourZidaSearchResponse(0, emptyList()) }

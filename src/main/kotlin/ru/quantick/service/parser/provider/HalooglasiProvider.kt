@@ -1,11 +1,11 @@
-package ru.quantick.service.provider
+package ru.quantick.service.parser.provider
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import ru.quantick.model.ProviderEnum
 import ru.quantick.model.RentAd
 
-class HalooglasiProvider : RentAdInterface {
+class HalooglasiProvider : RentProvider {
     override suspend fun getLastAds(num: Int): List<RentAd> {
         val url = "https://www.halooglasi.com/nekretnine/izdavanje-stanova/novi-sad?cena_d_to=1500&cena_d_unit=4"
         val doc = Jsoup.connect(url).userAgent("Mozilla").get()

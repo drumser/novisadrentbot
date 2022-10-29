@@ -1,4 +1,4 @@
-package ru.quantick
+package ru.quantick.database
 
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database

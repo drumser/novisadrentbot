@@ -7,16 +7,28 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: Log in to Docker Hub
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build and push
-      uses: docker/build-push-action@v3
-      with:
-        push: true
-        tags: drumser/novisadrentbot:latest
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.HOST_USERNAME }}
+        key: ${{ secrets.HOST_KEY }}
+        port: 22
+        script: whoami
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Log in to Docker Hub
+#       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+#       with:
+#         username: ${{ secrets.DOCKER_USERNAME }}
+#         password: ${{ secrets.DOCKER_PASSWORD }}
+#     - name: Build and push
+#       uses: docker/build-push-action@v3
+#       with:
+#         push: true
+#         tags: drumser/novisadrentbot:latest

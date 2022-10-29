@@ -16,10 +16,14 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.HOST_USERNAME }}
-        password: ${{ secrets.HOST_PASSWORD }}
-#         key: ${{ secrets.HOST_KEY }}
+        # password: ${{ secrets.HOST_PASSWORD }}
+        key: ${{ secrets.HOST_KEY }}
         port: 22
-        script: ls
+        script: |
+          cd novisadrentbot
+          docker-compose pull
+          docker-compose stop
+          docker-compose up -d
 #   build:
 #     runs-on: ubuntu-latest
 #     steps:

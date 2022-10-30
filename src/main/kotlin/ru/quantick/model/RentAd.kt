@@ -1,13 +1,14 @@
 package ru.quantick.model
 
 enum class ProviderEnum {
-    CITYEXPERT, FOUR_ZIDA, HALOOGLASI
+    CITYEXPERT, FOUR_ZIDA, HALOOGLASI, NEKRETNINE
 }
 
-val sourceMap = mapOf<ProviderEnum, String>(
+val sourceMap = mapOf(
     ProviderEnum.CITYEXPERT to "Cityexpert.rs",
     ProviderEnum.FOUR_ZIDA to "4zida.rs",
-    ProviderEnum.HALOOGLASI to "halooglasi.com"
+    ProviderEnum.HALOOGLASI to "halooglasi.com",
+    ProviderEnum.NEKRETNINE to "nekretnine.rs"
 )
 
 data class RentAd(

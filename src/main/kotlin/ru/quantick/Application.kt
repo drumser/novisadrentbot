@@ -10,6 +10,7 @@ import ru.quantick.service.parser.Parser
 import ru.quantick.service.parser.provider.CityexpertProvider
 import ru.quantick.service.parser.provider.FourZidaProvider
 import ru.quantick.service.parser.provider.HalooglasiProvider
+import ru.quantick.service.parser.provider.NekretnineProvider
 
 fun main() {
     DatabaseFactory.init()
@@ -27,7 +28,8 @@ private fun createScheduler(): Scheduler {
         listOf(
             CityexpertProvider(),
             FourZidaProvider(),
-            HalooglasiProvider()
+            HalooglasiProvider(),
+            NekretnineProvider(),
         )
     )
     val configuration = ConfigurationInitiator.create()

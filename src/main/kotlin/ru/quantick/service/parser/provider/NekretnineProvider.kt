@@ -35,7 +35,7 @@ class NekretnineProvider : RentProvider {
                     RentAd(
                         source = ProviderEnum.NEKRETNINE,
                         id = id,
-                        location = address ?: "",
+                        location = address,
                         size = size,
                         structure = structure,
                         furnished = null,

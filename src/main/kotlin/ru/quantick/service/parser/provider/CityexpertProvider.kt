@@ -36,7 +36,7 @@ class CityexpertProvider() : RentProvider {
         }
         accept(ContentType.Application.Json)
     }.body<CityExpertSearchResponse>().result.map {
-        it.location.split(", ").map { coor -> coor.toFloat() }.let { coordinate ->
+        it.location.split(", ").map { coor -> coor.toFloat() }.let { _ ->
             RentAd(
                 source = ProviderEnum.CITYEXPERT,
                 id = it.propId.toString(),

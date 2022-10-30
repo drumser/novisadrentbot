@@ -35,7 +35,7 @@ class HalooglasiProvider : RentProvider {
                         id = id,
                         location = address,
                         size = size?.trim('m')?.toInt() ?: 0,
-                        structure = structure ?: "unknown",
+                        structure = structure,
                         furnished = null,
                         firstPublished = publishDate ?: "",
                         price = price,

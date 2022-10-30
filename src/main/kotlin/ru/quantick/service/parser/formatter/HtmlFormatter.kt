@@ -10,8 +10,12 @@ class HtmlFormatter : Formatter {
                 "<b>Link:</b> ${rentAd.link}\n" +
                 "<b>Location:</b> ${rentAd.location}\n" +
                 "<b>Size:</b> ${rentAd.size}\n" +
-                "<b>Structure:</b> ${rentAd.structure}\n" +
-                "<b>Furnished:</b> ${rentAd.furnished ?: "unknown"}\n" +
+                (if (rentAd.structure != null)
+                    "<b>Structure:</b> ${rentAd.structure}\n"
+                else "") +
+                (if (rentAd.furnished != null)
+                    "<b>Furnished:</b> ${rentAd.structure}\n"
+                else "") +
                 "<b>Published at:</b> ${rentAd.firstPublished}\n\n" +
                 "<b>PRICE: ${rentAd.price}</b>"
 }

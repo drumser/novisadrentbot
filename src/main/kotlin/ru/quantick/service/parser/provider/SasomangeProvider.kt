@@ -6,38 +6,31 @@ import org.jsoup.nodes.Element
 import ru.quantick.model.ProviderEnum
 import ru.quantick.model.RentAd
 
-class NekretnineProvider : RentProvider {
+class SasomangeProvider : RentProvider {
     override suspend fun getLastAds(num: Int): List<RentAd> {
         val url =
-            "https://www.nekretnine.rs/stambeni-objekti/stanovi/izdavanje-prodaja/izdavanje/grad/novi-sad/cena/_1500/lista/po-stranici/10/?order=2"
+            "https://sasomange.rs/c/stanovi-iznajmljivanje/f/novi-sad?productsFacets.facets=priceValue:(*-1500),"
         val doc = Jsoup.connect(url).userAgent("Mozilla").get()
 
-        val items = doc.select("div.advert-list > div.offer")
+        val items = doc.select(".js-grid-view-item li.product-single-item:not(.promotion)")
 
         val result = mutableListOf<RentAd>()
         for (item in items) {
-            if ((item.selectFirst("div.flag-box")?.html() ?: "") != "") {
-                continue
-            }
-
             kotlin.runCatching {
                 val price = parsePrice(item)
                 val link = parseLink(item)
-                val detailDoc = Jsoup.connect(link).userAgent("Mozilla").get()
-
-                val structure = parseStructure(detailDoc)
-                val id = parseId(link)
+                val id = parseId(link) ?: return@runCatching
                 val publishDate = parsePublishDate(item)
-                val address = parseAddress(detailDoc)
+                val address = parseAddress(item)
                 val size = parseSize(item)
 
                 result.add(
                     RentAd(
-                        source = ProviderEnum.NEKRETNINE,
+                        source = ProviderEnum.SASOMANGE,
                         id = id,
                         location = address ?: "",
                         size = size,
-                        structure = structure,
+                        structure = null,
                         furnished = null,
                         firstPublished = publishDate ?: "",
                         price = price,
@@ -54,11 +47,8 @@ class NekretnineProvider : RentProvider {
         return result
     }
 
-    private fun parseId(link: String) = link
-        .split("/")
-        .let {
-            it.get(it.count() - 2)
-        }
+    private fun parseId(link: String) =
+        "/p/(\\d+).*".toRegex().find(link)?.groupValues?.get(1)
 
     private fun parseStructure(detailDoc: Document) =
         detailDoc
@@ -66,33 +56,32 @@ class NekretnineProvider : RentProvider {
             ?.html()
             ?.substringAfter("br>")
 
-    private fun parseAddress(detailDoc: Document) =
-        detailDoc.select(".property__location > ul > li")
-            .joinToString(" - ") {
-                it.html().replace("&nbsp;", "")
-            }.trimEnd('-', ' ')
+    private fun parseAddress(item: Element) =
+        item.selectFirst(".top-section .pin-item > span")?.html()
 
     private fun parsePublishDate(item: Element) = item
-        .selectFirst("div.offer-meta-info")
+        .selectFirst("time.pin-item > span")
         ?.html()
-        ?.split("|")?.first()?.trimEnd()
 
-    private fun parseLink(item: Element) = "https://www.nekretnine.rs${
+    private fun parseLink(item: Element) = "https://sasomange.rs${
         item
-            .selectFirst("h2.offer-title > a")
+            .selectFirst("a.product-link")
             ?.attr("href")
     }"
 
     private fun parseSize(item: Element) = item
-        .selectFirst(".text-right p.offer-price > span")
+        .selectFirst("ul.highlighted-attributes > li:nth-child(2) span")
         ?.html()
-        ?.replace(" ", "")
-        ?.substringBefore("m")
+        ?.substringBefore("m²")
+        ?.trim()
         ?.toInt() ?: 0
 
     private fun parsePrice(item: Element) = item
-        .selectFirst("p.offer-price > span")
+        .selectFirst("div.price-wrapper > p.product-price")
         ?.html()
-        ?.substringBefore("EUR")
+        ?.replace(".", "")
+        ?.replace("&nbsp;", "")
+        ?.substringBefore("€")
+        ?.replace(",", ".")
         ?.toFloat() ?: 0.0.toFloat()
 }

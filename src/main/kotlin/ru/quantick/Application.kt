@@ -25,25 +25,27 @@ fun main() {
 
 private fun createScheduler(): Scheduler {
     val dao = ShowedAdsDAO()
-    val parser = Parser(
-        listOf(
-            CityexpertProvider(),
-            FourZidaProvider(),
-            HalooglasiProvider(),
-            NekretnineProvider(),
-            SasomangeProvider(),
-        )
-    )
     val configuration = ConfigurationInitiator.create()
     val notifier = TelegramNotifier(
         bot = Bot.createPolling(configuration.tgToken),
         formatter = HtmlFormatter()
     )
 
+    val parser = Parser(
+        providers = listOf(
+            CityexpertProvider(),
+            FourZidaProvider(),
+            HalooglasiProvider(),
+            NekretnineProvider(),
+            SasomangeProvider(),
+        ),
+        dao = dao,
+        notifier = notifier,
+        configuration = configuration
+    )
+
     return Scheduler(
         configuration = configuration,
-        notifier = notifier,
-        dao = dao,
         parser = parser
     )
 }
